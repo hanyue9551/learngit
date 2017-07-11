@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇</title>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <style>
+        *{margin:0;padding:0;}
+        #box{width:700px;height:600px;border:1px solid grey;margin:0 auto;position:relative;}
+        button{position:absolute;border:none;padding:10px 20px;background:darkcyan;color:white;letter-spacing:1px;cursor:pointer;}
+        button:nth-of-type(1){right:70px;top:200px;z-index:100;}
+        .stop{right:80px;top:300px;}
+		button:nth-of-type(3){right:80px;top:400px;}
+        #over{position:absolute;left:50px;top:215px;height:100px;width:400px;color:red;z-index:100;display:none;}
+        h1{font-size:60px;}
+        .modal{position:absolute;width:100%;height:100%;background:rgba(0,0,0,1);z-index:100;display:none;}
+        .score{position:absolute;top:100px;right:70px;text-align:Center;z-index:100;}
+        h2{font-size:30px;}
+        p{line-height:50px;width:100px;font-size:20px;}
+        #goBack{font-size:20px;cursor:pointer;position:absolute;bottom:30%;left:60%;text-decoration:none;z-index:200;color:black;}
+        #goBack:hover{color:red;}
+    </style>
+</head>
+
+<body>
+    <a href="index-1.html" id="goBack">返回主页</a>
+    <div class="modal"></div>
+    <div id="box">
+        <canvas id="cvs" width="500" height="500"></canvas>
+        <div class="score">
+            <h2>SCORE</h2>
+            <p>0</p>
+        </div>
+        <button type="button">重新开始</button>
+        <button type="button" class="stop">暂停</button>
+       	<button type="button">开始</button>
+        <div id="over">
+            <h1>Game Over!</h1>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    var cvs=document.getElementById('cvs'),
+            ctx=cvs.getContext('2d'),
+            w=20;
+    var snake=[{x:5,y:6}];
+    var num=Math.random()*10;//随机数
+    var timer,timer2;
+    var str;
+    function can(){//画布格
+        ctx.clearRect(0,0,500,500);
+        for (var i=0;i<100;i++){
+            for(var j=0;j<100;j++){
+                ctx.strokeStyle="black";
+                ctx.strokeRect(i*w,j*w,w,w);
+            };
+        };
+    };
+    can();
+    function runstart(){//最开始没有任何操作时贪吃蛇随机往一个方向动
+        can();
+        if(num>=0&&num<2.5){
+            snake[0].x--;
+        }else if(num>=2.5&&num<5){
+            snake[0].x++;
+        }else if(num>=5&&num<7.5){
+            snake[0].y--;
+        }else if(num>=7.5){
+            snake[0].y++;
+        };
+       	snakes();
+        if(snake[0].x==str[0]&&snake[0].y==str[1]){//当最初豆豆和蛇头位置一样时
+            eat();
+            snakes();
+        };
+        die();
+        dou();
+    };
+    timer=setInterval(runstart,150);
+    function randomshow(){//
+        //rx:随机x;ry:随机y;范围:[0,25)
+        var rx=Math.floor(Math.random()*25),
+                ry=Math.floor(Math.random()*25);
+        ctx.fillStyle="yellow";
+        ctx.strokeStyle="black";
+        ctx.fillRect(rx*w,ry*w,w,w);
+        ctx.strokeRect(rx*w,ry*w,w,w);
+        var arr=[rx,ry];//将随机出现的位置保存在一个数组中并返回
+        return arr;
+    };
+    str=randomshow();//接收返回值
+    function dou(){//画豆豆
+        ctx.fillStyle="yellow";
+        ctx.strokeStyle="black";
+        ctx.fillRect(str[0]*w,str[1]*w,w,w);
+        ctx.strokeRect(str[0]*w,str[1]*w,w,w);
+    };
+    function snakes(){//画蛇
+        ctx.fillSyle="red";
+        ctx.fillRect(snake[0].x*w,snake[0].y*w,w,w);
+        for(var k=1;k<snake.length;k++){
+            ctx.fillStyle="black";
+            ctx.strokeStyle="white";
+            ctx.fillRect(snake[k].x*w,snake[k].y*w,w,w);
+            ctx.strokeRect(snake[k].x*w,snake[k].y*w,w,w);
+        };
+        die();
+        $('p').html(snake.length-1);
+    };
+    snakes();
+    function move(){//蛇移动
+        for(var k=snake.length-1;k>0;k--){
+            snake[k].x=snake[k-1].x;
+            snake[k].y=snake[k-1].y;
+        };
+    };
+    function eat(){//吃掉豆豆
+        if(snake[0].x==str[0]&&snake[0].y==str[1]){//当蛇碰到随机出现的小方格时
+            snake.push({x:str[0],y:str[1]});//蛇加长
+            str.splice(0,1);//同时清空数组
+            str=randomshow();//吃掉豆豆的同时出现下一个豆豆
+        };
+    };
+    var ncode=-1;
+    function fan(ncode){//不能返回
+        switch(ncode){
+            case 0:snake[0].x--;break;//left
+            case 1:snake[0].y--;break;//up
+            case 2:snake[0].x++;break;//right
+            case 3:snake[0].y++;break;//down
+            default:break;
+        };
+    };
+    function leftdown(){//左方向键
+        can();
+        dou();
+        eat();
+        move();
+        if(ncode!=2){
+            ncode=0;
+            fan(ncode);
+        };
+        snakes();
+    };
+    function updown(){//上键
+        can();
+        dou();
+        eat();
+        move();
+        if(ncode!=3){
+            ncode=1;
+            fan(ncode);
+        };
+        snakes();
+    };
+    function rightdown(){//右方向键
+        can();
+        dou();
+        eat();
+        move();
+        if(ncode!=0){
+            ncode=2;
+            fan(ncode);
+        };
+        snakes();
+    };
+    function downdown(){//下键
+        can();
+        dou();
+        eat();
+        move();
+        if(ncode!=1){
+            ncode=3;
+            fan(ncode);
+        };
+        snakes();
+    };
+    function die() {//撞墙挂
+        if (snake[0].x<0||snake[0].x>24||snake[0].y<0||snake[0].y>24){
+            $('.modal').show();
+            $('#over').show();
+            $('.score').css('color','white');
+            $('#goBack').css('color','white');
+        };
+    };
+    document.onkeyup=function(ev){//方向键抬起时根据抬起前的键盘码判断方向
+        var code=ev.keyCode;
+        ctx.strokeStyle="black";
+        ctx.fillStyle="red";
+        switch(code){//根据方向键移动
+            case 37://left
+                timer2=setInterval(leftdown,150);
+                break;
+            case 38://up
+                timer2=setInterval(updown,150);
+                break;
+            case 39://right
+                timer2=setInterval(rightdown,150);
+                break;
+            case 40://down
+                timer2=setInterval(downdown,150);
+                break;
+            default:break;
+        };
+        snakes();
+    };
+    document.onkeydown=function(ev){
+        var code=ev.keyCode;
+        clearInterval(timer);//方向键按下时停止自动跑的定时器
+        can();
+        eat();
+        ctx.fillStyle="red";
+        switch(code){//根据方向键移动
+            case 37://left
+                clearInterval(timer2);
+                move();
+                if(ncode!=2){
+                    ncode=0;
+                    fan(ncode);
+                };
+                snakes();
+                break;
+            case 38://up
+                clearInterval(timer2);
+                move();
+                if(ncode!=3){
+                    ncode=1;
+                    fan(ncode);
+                };
+                snakes();
+                break;
+            case 39://right
+                clearInterval(timer2);
+                move();
+                if(ncode!=0){
+                    ncode=2;
+                    fan(ncode);
+                };
+                snakes();
+                break;
+            case 40://down
+                clearInterval(timer2);
+                move();
+                if(ncode!=1){
+                    ncode=3;
+                    fan(ncode);
+                };
+                snakes();
+                break;
+            default:break;
+        };
+        dou();
+    };
+    $('button:first').click(function(){//重新开始..直接刷新页面
+        window.location.reload();
+    });
+    $('.stop').click(function(){
+        clearInterval(timer);
+        clearInterval(timer2);
+    });
+	$('button:last').click(function(){
+		timer=setInterval(runstart,150);
+		snakes();
+	});
+</script>

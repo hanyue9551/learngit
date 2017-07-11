@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>相册</title>
+    <link rel="stylesheet" type="text/css" href="css/demo.css">
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/sketch.min.js"></script>
+    <!--[if lte IE 8]><style>.main{display:none;} .support-note .note-ie{display:block;}</style><![endif]-->
+    <style>
+        body{background-color:black;}
+        .box{ width:350px; height:600px;border-radius:8px;border:2px solid white;transform-style:preserve-3d;perspective:1500px;}
+        .center{ position:absolute; left:0; top:0; right:0; bottom:0; margin:auto;}
+        .pic{border-radius:8px;position:absolute;transition:all 1s;transform-origin:right center;}
+        button{width:50px;position:absolute;}
+        .prev{bottom:-30px;left:5px;}
+        .next{bottom:-30px;left:70px;}
+        #goBack{color:white;font-size:20px;cursor:pointer;position:absolute;bottom:-50px;right:10%;text-decoration:none;}
+    </style>
+</head>
+<script>
+    $(function(){
+        //定义变量
+        var
+                box=$('.box'),
+                w=box.width(),
+                h=box.height(),
+                num=4;
+        box.css('transform','rotateX(-30deg)');
+        for(var i=0;i<num;i++){//插入图片
+            $('<div class="pic"></div>')
+                    .width(w)
+                    .height(h)
+                    .css({'background':'url(images/0'+i+'.jpg) no-repeat','transform':'translateZ('+(-i*50)+'px)'})
+                    .appendTo(box);
+        };
+        //点击事件
+        box.on('click','.prev,.next',function(){
+            if($(this).hasClass('next')){
+                $('.pic:first').css({'transform':'rotateY(-180deg)','opacity':0});
+                setTimeout(function(){
+                    $('.pic:first').css({'transform':'rotateY(360deg) translateZ(-200px)','opacity':1}).appendTo(box);
+                    setTimeout(paixu,500);
+                },1000);
+            };
+            if($(this).hasClass('prev')){
+                //为了回翻时更好的用户体验,直接先把最后一个放进盒子里
+                $('.pic:last').css({'transform':'rotateY(180deg)','opacity':0.1}).prependTo(box);
+                setTimeout(function(){//再从第一个读,设一个零秒的超时定时器为了在单线程时后运行;
+                    $('.pic:first').css({'transform':'rotateY(360deg) translateZ(50px)','opacity':1});
+                    setTimeout(paixu,500);
+                },0)
+            };
+        });
+        function paixu(){
+            $('.pic').each(function(i){
+                var z=i*(-50);
+                $('.pic').eq(i).css({'transform':'translateZ('+z+'px)'});
+            });
+        };
+    })
+</script>
+<body id="body">
+<div class="box center">
+    <button type="button" class="prev">prev</button>
+    <button type="button" class="next">next</button>
+    <a href="index-1.html" id="goBack">返回主页</a>
+</div>
+<div id="test" style=" position:fixed;top:0px;z-index:-20;"></div>
+<script>
+    // ----------------------------------------
+    // Particle
+    // ----------------------------------------
+    function Particle(x, y, radius) {
+        this.init(x, y, radius);
+    }
+    Particle.prototype = {
+        init : function(x, y, radius) {
+            this.alive = true;
+            this.radius = radius || 10;
+            this.wander = 0.15;
+            this.theta = random(TWO_PI);
+            this.drag = 0.92;
+            this.color = '#fff';
+
+            this.x = x || 0.0;
+            this.y = y || 0.0;
+
+            this.vx = 0.0;
+            this.vy = 0.0;
+        },
+        move : function() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vx *= this.drag;
+            this.vy *= this.drag;
+            this.theta += random(-0.5, 0.5) * this.wander;
+            this.vx += sin(this.theta) * 0.1;
+            this.vy += cos(this.theta) * 0.1;
+            this.radius *= 0.96;
+            this.alive = this.radius > 0.5;
+        },
+        draw : function(ctx) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, TWO_PI);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    };
+    // ----------------------------------------
+    // Example
+    // ----------------------------------------
+    var MAX_PARTICLES = 280;
+    var COLOURS = [ '#69D2E7', '#A7DBD8', '#E0E4CC', '#F38630', '#FA6900',
+        '#FF4E50', '#F9D423' ];
+
+    var particles = [];
+    var pool = [];
+
+    var demo = Sketch.create({
+        container : document.getElementById('test')
+    });
+    demo.setup = function() {
+        // Set off some initial particles.
+        var i, x, y;
+        //  for ( i = 0; i < 20; i++ ) {
+        x = (demo.width * 0.5) + random(-100, 100);
+        y = (demo.height * 0.5) + random(-100, 100);
+        demo.spawn(0, 999);
+        // }
+    };
+    demo.spawn = function(x, y) {
+        if (particles.length >= MAX_PARTICLES)
+            pool.push(particles.shift());
+        particle = pool.length ? pool.pop() : new Particle();
+        particle.init(x, y, random(5, 40));
+        particle.wander = random(0.5, 2.0);
+        particle.color = random(COLOURS);
+        particle.drag = random(0.9, 0.99);
+        theta = random(TWO_PI);
+        force = random(2, 8);
+        particle.vx = sin(theta) * force;
+        particle.vy = cos(theta) * force;
+        particles.push(particle);
+    };
+    demo.update = function() {
+        var i, particle;
+        for (i = particles.length - 1; i >= 0; i--) {
+            particle = particles[i];
+            if (particle.alive)
+                particle.move();
+            else
+                pool.push(particles.splice(i, 1)[0]);
+        }
+    };
+    demo.draw = function() {
+        demo.globalCompositeOperation = 'lighter';
+        for ( var i = particles.length - 1; i >= 0; i--) {
+            particles[i].draw(demo);
+        }
+    };
+    demo.mousemove = function() {
+        var particle, theta, force, touch, max, i, j, n;
+        for (i = 0, n = demo.touches.length; i < n; i++) {
+            touch = demo.touches[i], max = random(1, 4);
+            for (j = 0; j < max; j++) {
+                demo.spawn(touch.x, touch.y);
+            }
+        }
+    };
+</script>
+</body>
+</html>

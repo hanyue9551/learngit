@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>照片墙</title>
+<style>
+body{ background-color:#000;}
+.gallery{ width:980px; height:500px;}
+.center{position:absolute; left:0; top:0;right:0; bottom:0; margin:auto;}
+.item{ width:196px; height:100px; position:absolute; background-color:#fff; transition:transform 1s;}
+.pic{ width:100%; height:100%; transition:transform 1s;}
+#goBack{text-decoration:none;color:white;font-size:50px;position:absolute;right:5%;top:5%;cursor:pointer;}
+</style>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script>
+$(function(){
+    var gallery=$(".gallery");
+	init();
+	showAll();
+	 function init(){
+		for(var i=0;i<25;i++){
+			var x=i%5;
+			var y=parseInt(i/5);
+			$("<div class='item'><div class='pic'></div></div>")
+			.css({
+				"left":	x*196+"px",
+				"top":y*100+"px"
+			})
+			.appendTo(gallery)
+		}
+     }
+	 function showAll(){
+		 $(".item").each(function(index, element) {
+			    var x=index%5;
+				var y=parseInt(index/5);
+				var deg=Math.random()*60-30;  // [-30,30)
+                $(this).css({
+				     "transform":"translate("+(x-2)*50+"px,"+(y-2)*50+"px) rotate("+deg+"deg)"	
+				})
+				$(this).find(".pic")
+				.css({
+					"background-image":"url(images/"+index+".jpg)",
+				    "background-size":"cover",
+				    "transform":"scale(0.95,0.90)"  
+				})
+         });
+	 };
+	 function showItem(index){
+		$(".item").each(function(i, element) {
+			var x=i%5;
+			var y=parseInt(i/5);
+            $(this).css({
+			    "transform":"translate(0,0) rotate(0deg)"	
+			});
+			$(this).find(".pic")
+			.css({
+				 "background-image":"url(images/"+index+".jpg)",
+				 "background-size":"auto",
+				 "background-position":x*(-196)+"px "+y*(-100)+"px",
+				 "transform":"scale(1)"
+			})
+        });
+	 }
+	 var isShowAll=true;
+	 $(".item").click(function(){
+	       var index=$(this).index();
+		   if(isShowAll){
+			   showItem(index);   
+		   }else{
+			   showAll();   
+		   }
+		   isShowAll=!isShowAll;
+	 })
+});
+</script>
+</head>
+<body>
+<div class="gallery center"></div>
+<a id="goBack" href="index-1.html">返回主页</a>
+</body>
+</html>

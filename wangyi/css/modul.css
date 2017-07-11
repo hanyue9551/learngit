@@ -1,0 +1,109 @@
+@charset "UTF-8";
+ul{list-style:none;padding:0;margin:0;}
+html{font-size:100px;height:100%;}
+body,p,ol{margin:0;padding:0;}
+body{font-size:20px;height:100%;}
+img[alt]{font-size:0.16rem;}
+a{text-decoration:none;}
+i{font-style:normal;}
+/*欢迎页*/
+#hello{background-color:#ac1713;height:100%;position:relative;}
+#hello img{position:absolute;width:100%;}
+#hello a{position:absolute;z-index:10;top:50%;cursor:pointer;color:white;padding:10px;border-radius:5px;border:2px solid white;}
+/*底部*/
+#public{position:fixed;bottom:0;left:0;font-size:0.16rem;height:0.5rem;text-align:left;width:100%;background:rgba(255,255,255,.9);z-index:100;}
+/*头部*/
+#share{height:100%;}
+#share .header{position:fixed;top:0;z-index:10;width:100%;}
+#share .header h2{font-size:0.25rem;background:#cd3c3d;color:white;line-height:0.5rem;margin:0;padding-left:0.2rem;}
+#share .header li{float:left;width:calc(100% / 4);border-bottom:4px solid transparent;text-align:center;box-sizing:border-box;cursor:pointer;font-size:0.18rem;color:black;line-height:0.5rem;background:white;}
+#share .header .active{border-bottom:4px solid #cd3c3d;color:#cd3c3d;}
+.section1,
+.section2,
+.section3,
+.section4{padding-top:1rem;padding-bottom:0.5rem;}
+.conlist{width:100%;display:flex;flex-wrap:wrap;}
+.tuijian_playlist{height:0.4rem;line-height:0.4rem;padding:0 0.2rem;}
+.section1 .tuijian_playlist h3{font-size:0.18rem;float:left;margin:0;}
+.tuijian_playlist span{font-size:0.14rem;font-family:consolas;float:right;}
+/*轮播区*/
+.section1 .banner_pic,
+.section4 .banner_pic{position:relative;overflow:hidden;width:100%;padding-bottom:0.1rem;}
+.banner_pic img{width:100%;}
+.section1 .banner_num,
+.section4 .banner_num{position:absolute;top:36%;z-index:10;}
+.section1 .banner_num li,
+.section4 .banner_num li{background-color:white;height:0.1rem;width:0.1rem;border-radius:50%;float:left;margin:0 0.05rem;}
+.section1 .banner_num .active,
+.section4 .banner_num .active{background-color:red;}
+/*轮播区结束*/
+#conlist .item,
+#conlist3 .item,
+#conlist4 .item{margin:1.5%;position:relative;width:calc(100% / 3 - 3%);}
+#conlist .pinglun,
+#conlist2 .pinglun{font-size:0.16rem;position:absolute;background:rgba(0,0,0,.2);width:100%;color:white;text-align:right;padding:0.05rem 0;}
+#conlist img,
+#conlist2 img,
+#conlist3 img,
+#conlist4 img{width:100%;}
+#conlist p,
+#conlist3 p,
+#conlist4 p{font-size:0.14rem;overflow:hidden;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;}
+#conlist2 .item{margin:1.5%;position:relative;width:calc(100% / 2 - 3%);}
+.section2 .tuijian_playlist h3,
+.section3 .tuijian_playlist h3,
+.section4 .tuijian_playlist h3{font-size:0.18rem;float:left;margin:0;border-left:3px solid #ce3d3e;padding-left:0.07rem;}
+#conlist2 p{font-size:0.14rem;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+.conlist a p{color:black;}
+.conlist .item a .name{width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#conlist3 .name,
+#conlist4 .name{position:absolute;bottom:0.5rem;left:0.1rem;color:white;font-size:0.16rem;}
+/*音乐播放列表*/
+#special{padding-top:0.5rem;height:2rem;position:relative;width:100%;}
+#special .special_left,
+#special .special_right{display:inline-block;}
+#special .special_right{width:40%;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+#special .special_left{margin:0.3rem;}
+#special .special_left img{width:1.2rem;}
+.blur{filter:blur(20px);position:absolute;z-index:-5;height:2rem;width:100%;}
+#special .special_right{color:white;}
+#special .special_right span{font-size:0.14rem;}
+#special .special_right img{border-radius:50%;width:0.3rem;height:0.3rem;}
+#musicList{padding:0.3rem 0 0.5rem 0.35rem;}
+#musicList .musicItem{border-bottom:2px solid #ccc;position:relative;}
+#musicList .singerName{font-size:0.2rem;width:70%;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;position:relative;top:-0.15rem;padding-left:0.1rem;}
+#musicList .singerDetail{font-size:0.16rem;position:relative;top:-0.1rem;padding-left:0.1rem;}
+#musicList .musicItem span{width:0.4rem;height:0.4rem;line-height:0.5rem;position:absolute;right:0.2rem;top:calc(50% - 0.2rem);}
+#musicList .collection{background-image:url(../images/collection.png);}
+#musicList .collected{background-image:url(../images/collection-red.png);}
+#backup{width:100%;height:0.5rem;line-height:0.5rem;background-color:#cd3c3d;color:white;font-family:consolas;padding-left:0.2rem;position:fixed;top:0;z-index:10;}
+/*按钮*/
+#btn{position:absolute;bottom:0;right:0.2rem;height:0.5rem;width:0.5rem;background-image:url(../images/playbar_btn_play.png);background-size:cover;}
+#btn.play{background-image:url(../images/playbar_btn_pause.png);background-size:cover;}
+#musicList_btn{background-image:url(../images/playbar_btn_playlist.png);background-size:cover;height:0.5rem;width:0.5rem;position:absolute;bottom:0;right:0.7rem;}
+#btnItem{position:absolute;bottom:0.5rem;background-color:white;height:4rem;width:100%;border-top:2px solid #ccc;z-index:5;display:none;}
+#btnItem > li{border-bottom:1px solid #ccc;padding-left:0.2rem;}
+/*歌单曲列表*/
+#music_state{padding-left:0.6rem;}
+#music_pic{height:0.4rem;position:absolute;top:0.05rem;left:0.1rem;}
+#music_name{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:40%;display:inline-block;padding-left:0.6rem;padding-top:0.05rem;}
+#music_singer{font-size:0.12rem;color:#333;padding-left:0.6rem;}
+/*音乐详情页*/
+#musicPlay{position:relative;height:100%;}
+#musicPlay .music_bg{height:100%;position:absolute;width:100%;filter:blur(20px);z-index:-10;}
+#musicPlay .music_header{height:0.5rem;border-bottom:1px solid #eee;text-align:center;color:white;position:relative;z-index:100;}
+#musicPlay .music_header span{position:absolute;left:5%;line-height:0.5rem;}
+#musicPlay .play_name{font-size:0.16rem;margin:0;line-height:0.3rem;display:inline-block;width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0;}
+#musicPlay .play_singer{font-size:0.14rem;margin-top:-0.05rem;}
+#musicPlay .music_main{width:2.6rem;height:2.6rem;border-radius:50%;background-image:url(../images/placeholder_disk_play_song.png);background-size:cover;position:relative;top:calc(50% - 2.5rem);left:calc(50% - 1.3rem);animation:xuanzhuan 10s linear infinite;}
+@keyframes xuanzhuan{
+    0%{transform:rotateZ(0deg)}
+    50%{transform:rotateZ(180deg)}
+    100%{transform:rotateZ(360deg)}
+}
+#musicPlay .music_main img{width:2rem;height:2rem;border-radius:50%;text-align:center;padding:0.3rem;}
+#start_stick{height:2rem;width:1.38rem;position:absolute;z-index:20;left:calc(50% - 0.35rem);background-image:url(../images/stick_bg.png);background-size:cover;transform-origin:10px 0;top:0.2rem;transition:all 2s;}
+
+
+
+

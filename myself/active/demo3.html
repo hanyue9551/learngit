@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>切换</title>
+    <style>
+        *{margin:0;padding:0;}
+        ul,ol{ list-style:none;}
+        a{text-decoration:none;color:#333;display:block;border-radius:50%;width:100px;height:100px;border:1px solid #666;margin:0 50px;font:18px/100px "Microsoft YaHei";text-align:center;}
+        .wrap{ position:absolute; left:0; top:0; right:0; bottom:0; margin:auto;}
+        .box{ width:980px; height:500px; overflow:hidden }
+        .center{ position:absolute; left:0; top:0; right:0; bottom:0; margin:auto;}
+        .slide{ position:absolute;left:0; top:0; width:100%; height:100%;}
+        .item{ position:absolute;top:0;}
+        .nav{ position:absolute; left :50px; bottom:30px; width:200px; height:30px; z-index:100;}
+        .nav li{ float:left;border:1px #333 solid; width:25px; height:25px; margin-right:15px; border-radius:50%; text-align:center; line-height:25px; cursor:pointer; background-color:#333;color:white }
+        .nav li a{display:block;padding:25px;}
+        .nav li.ac{ background-color:#fff;color:black;}
+        .option{position:absolute;top:50px;left:30%;}
+        .option li{float:left;}
+        .option li.ac{background:#00a0e9;border-radius:50%;width:100px;height:100px;border:1px solid #666;margin:0 50px;font:18px/100px "Microsoft YaHei";text-align:center;cursor:pointer;}
+        #goBack{color:black;font-size:20px;position:absolute;top:10%;right:10%;border-radius:0;}
+        #goBack:hover{background-color:#00a0e9;color:white;}
+    </style>
+</head>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+    $(function(){
+        //定义变量
+        var box=$(".box"),
+                w=box.width()/4,
+                h=box.height(),
+                index=0;
+        function init(){//插入图片
+            for(var i=0;i<4;i++){
+                var slide=$('<div class="slide"></div>');
+                for(var j=0;j<4;j++){
+                    $('<div class="item"></div>')
+                            .width(w)
+                            .height(h)
+                            .css({
+                                'right':(3-j)*w+'px',
+                                'background-image':"url(img/"+i+".jpg",
+                                'background-position':j*(-w)+'px 0px'
+                            })
+                            .appendTo(slide);
+                };
+                slide.appendTo(box);
+            };
+        };
+        init();
+        function show(index,cur){//初始化
+            $('.slide').hide();
+            $('.slide').eq(index).css('z-index',2).show();
+            $('.slide').eq(cur).show().css('z-index',1);
+        };
+        show(0,1);
+        $('.nav li').click(function(){
+            $(this).addClass('ac').siblings().removeClass('ac');
+            var n=$(this).index();
+            $('.slide').children('.item').css({'height':h}).finish();
+            $('.slide').finish();
+            if(n==index){return false;}
+            show(index,n);
+            $('.slide').eq(index).children('.item').each(function(i){
+                if(i%2==0){
+                    $(this).css('top',h).animate({'top':0},1000);
+
+                }else{
+                    $(this).css('top',-h).animate({'top':0},1000);
+                }
+            });
+            $('.slide').eq(n).animate({'top':0},1000);
+            index=n;
+        });
+    });
+
+</script>
+<body>
+<div class="wrap">
+    <ol class="option">
+        <li><a href="demo1.html">DEMO1</a></li>
+        <li><a href="demo2.html">DEMO2</a></li>
+        <li class="ac">DEMO3</li>
+        <li><a href="demo4.html">DEMO4</a></li>
+    </ol>
+    <div class="box center">
+        <ul class="nav">
+            <li class="ac">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+</div>
+<a href="../index-1.html" id="goBack">返回主页</a>
+</body>
+</html>
